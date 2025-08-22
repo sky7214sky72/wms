@@ -118,41 +118,438 @@ erDiagram
 
 # API 설계
 
-** USER API
+<h3><b>USER API</b></h3>
 
-|  구분  |       기능명        | Method |       Endpoint        |                             Request 예시                              |                                            Response 예시                                             |    비고     |
-|:----:|:----------------:|:------:|:---------------------:|:-------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|:---------:|
-| Auth |       로그인        |  POST  |      /auth/login      |          { "email": "test@test.com", "password": "1234" }           |                       { "accessToken": "jwt...", "refreshToken": "jwt..." }                        |  JWT 발행   |
-| Auth | 사용자 인증 (랜덤코드 전송) |  POST  |   /auth/verify-code   |                    { "email": "test@test.com" }                     |                                    { "message": "인증코드 발송 완료" }                                     | 비밀번호 변경 전 |
-| Auth |     비밀번호 변경      |  PUT   |    /auth/password     | { "email": "test@test.com", "code":"123456", "newPassword":"****" } |                                    { "message": "비밀번호 변경 완료" }                                     |           |
-| User |    사용자 목록 조회     |  GET   | /users?page=0&size=20 |                                  -                                  | { "content": [{ "id":1,"email":"a@test.com","lastLogin":"2025-08-20" }], "page":0,"totalPages":5 } |    페이징    |
-| User |    사용자 상세 조회     |  GET   |      /users/{id}      |                                  -                                  |           { "id":1, "email":"a@test.com", "roles":["ROLE_USER"], "warehouses":["창고A"] }            |           |
-| User |      사용자 생성      |  POST  |        /users         |            { "email":"new@test.com", "password":"1234" }            |                                 { "id":2, "email":"new@test.com" }                                 | 운영 정책에 따라 |
+<table>
+  <colgroup>
+    <col style="width:8%">
+    <col style="width:14%">
+    <col style="width:8%">
+    <col style="width:18%">
+    <col style="width:24%">
+    <col style="width:24%">
+    <col style="width:4%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>구분</th>
+      <th>기능명</th>
+      <th>Method</th>
+      <th>Endpoint</th>
+      <th>Request 예시</th>
+      <th>Response 예시</th>
+      <th>비고</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Auth</td>
+      <td>로그인</td>
+      <td>POST</td>
+      <td>/auth/login</td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{
+  "email": "test@test.com",
+  "password": "1234"
+}</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{
+  "accessToken": "jwt...",
+  "refreshToken": "jwt..."
+}</pre>
+        </details>
+      </td>
+      <td>JWT 발행</td>
+    </tr>
+    <tr>
+      <td>Auth</td>
+      <td>사용자 인증 (랜덤코드 전송)</td>
+      <td>POST</td>
+      <td>/auth/verify-code</td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{ "email": "test@test.com" }</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{ "message": "인증코드 발송 완료" }</pre>
+        </details>
+      </td>
+      <td>비밀번호 변경 전</td>
+    </tr>
+    <tr>
+      <td>Auth</td>
+      <td>비밀번호 변경</td>
+      <td>PUT</td>
+      <td>/auth/password</td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{
+  "email": "test@test.com",
+  "code": "123456",
+  "newPassword": "****"
+}</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{ "message": "비밀번호 변경 완료" }</pre>
+        </details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>사용자 목록 조회</td>
+      <td>GET</td>
+      <td>/users?page=0&amp;size=20</td>
+      <td>-</td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{
+  "content": [
+    { "id": 1, "email": "a@test.com", "lastLogin": "2025-08-20" }
+  ],
+  "page": 0,
+  "totalPages": 5
+}</pre>
+        </details>
+      </td>
+      <td>페이징</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>사용자 상세 조회</td>
+      <td>GET</td>
+      <td>/users/{id}</td>
+      <td>-</td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{
+  "id": 1,
+  "email": "a@test.com",
+  "roles": ["ROLE_USER"],
+  "warehouses": ["창고A"]
+}</pre>
+        </details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>사용자 생성</td>
+      <td>POST</td>
+      <td>/users</td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{ "email": "new@test.com", "password": "1234" }</pre>
+        </details>
+      </td>
+      <td>
+        <details>
+          <summary>보기</summary>
+          <pre>{ "id": 2, "email": "new@test.com" }</pre>
+        </details>
+      </td>
+      <td>운영 정책에 따라</td>
+    </tr>
+  </tbody>
+</table>
 
-** WMS API
 
-|      구분      |    기능명     | Method |               Endpoint               |                             Request 예시                             |                                  Response 예시                                   |      비고      |
-|:------------:|:----------:|:------:|:------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------------------:|:------------:|
-|  Warehouse   |   창고 등록    |  POST  |             /warehouses              |                         { "name":"서울창고" }                          |               { "id":1, "code":"WR16925012345", "name":"서울창고" }                |   코드 자동 생성   |
-|  Warehouse   |   창고 수정    |  PUT   |           /warehouses/{id}           |                         { "name":"부산창고" }                          |                            { "id":1,"name":"부산창고" }                            |              |
-|  Warehouse   |   창고 삭제    | DELETE |           /warehouses/{id}           |                                 -                                  |                          { "message":"창고 비활성화 처리됨" }                           | Soft Delete  |
-|  Warehouse   | 창고 관리자 추가  |  POST  |      /warehouses/{id}/managers       |                         { "memberId":10 }                          |                       { "warehouseId":1, "memberId":10 }                       |              |
-|  Warehouse   | 창고 관리자 삭제  | DELETE | /warehouses/{id}/managers/{memberId} |                                 -                                  |                           { "message":"관리자 권한 해제" }                            |    추가 제안     |
-|    Pallet    |   팔렛트 등록   |  POST  |               /pallets               |                { "warehouseId":1, "code":"PL001" }                 |                   { "id":1,"warehouseId":1,"code":"PL001" }                    |              |
-|    Pallet    |   팔렛트 수정   |  PUT   |            /pallets/{id}             |                         { "code":"PL002" }                         |                           { "id":1,"code":"PL002" }                            |              |
-|    Pallet    |   팔렛트 삭제   | DELETE |            /pallets/{id}             |                                 -                                  |                          { "message":"팔렛트 비활성화 처리됨" }                          | Soft Delete  |
-|    Pallet    |   팔렛트 조회   |  GET   |        /pallets?warehouseId=1        |                                 -                                  |                  [{"id":1,"code":"PL001","status":"ACTIVE"}]                   |   검색조건 가능    |
-| ItemCategory | 상품 카테고리 등록 |  POST  |           /item-categories           |            { "mainCategory":"식품", "subCategory":"과자" }             |               { "id":1,"mainCategory":"식품","subCategory":"과자" }                |              |
-| ItemCategory | 상품 카테고리 수정 |  PUT   |        /item-categories/{id}         |                       { "subCategory":"스낵" }                       |                         { "id":1,"subCategory":"스낵" }                          |              |
-| ItemCategory | 상품 카테고리 삭제 | DELETE |        /item-categories/{id}         |                                 -                                  |                         { "message":"카테고리 비활성화 처리됨" }                          | Soft Delete  |
-| ItemCategory | 상품 카테고리 조회 |  GET   |   /item-categories?mainCategory=식품   |                                 -                                  |               [{"id":1,"mainCategory":"식품","subCategory":"과자"}]                |              |
-|     Item     |   상품 등록    |  POST  |                /items                | { "itemCategoryId":1, "sku":"SKU001", "name":"초코파이", "unit":"EA" } |                    { "id":1,"sku":"SKU001","name":"초코파이" }                     |              |
-|     Item     |   상품 수정    |  PUT   |             /items/{id}              |                       { "name":"오리온 초코파이" }                        |                          { "id":1,"name":"오리온 초코파이" }                          |              |
-|     Item     |   상품 삭제    | DELETE |             /items/{id}              |                                 -                                  |                          { "message":"상품 비활성화 처리됨" }                           | Soft Delete  |
-|     Item     |  상품 목록 조회  |  GET   |  /items?categoryId=1&page=0&size=10  |                                 -                                  | { "content":[{"id":1,"sku":"SKU001","name":"초코파이"}], "page":0,"totalPages":1 } |     페이징      |
-|     Item     |  상품 단건 조회  |  GET   |             /items/{id}              |                                 -                                  |           { "id":1,"sku":"SKU001","name":"초코파이","status":"ACTIVE" }            |              |
-|  Inventory   |     입고     |  POST  |              /inbounds               |             { "itemId":1,"palletId":5,"quantity":100 }             |             { "eventId":"kafka-offset-123","status":"PUBLISHED" }              | Kafka 이벤트 발행 |
-|  Inventory   |     출고     |  POST  |              /outbounds              |             { "itemId":1,"palletId":5,"quantity":50 }              |             { "eventId":"kafka-offset-124","status":"PUBLISHED" }              | Kafka 이벤트 발행 |
+<h3><b>WMS API</b></h3>
+
+<table>
+  <colgroup>
+    <col style="width:10%">
+    <col style="width:14%">
+    <col style="width:8%">
+    <col style="width:20%">
+    <col style="width:22%">
+    <col style="width:22%">
+    <col style="width:4%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>구분</th>
+      <th>기능명</th>
+      <th>Method</th>
+      <th>Endpoint</th>
+      <th>Request 예시</th>
+      <th>Response 예시</th>
+      <th>비고</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Warehouse</td>
+      <td>창고 등록</td>
+      <td>POST</td>
+      <td>/warehouses</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "name": "서울창고" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "code": "WR16925012345", "name": "서울창고" }</pre></details>
+      </td>
+      <td>코드 자동 생성</td>
+    </tr>
+    <tr>
+      <td>Warehouse</td>
+      <td>창고 수정</td>
+      <td>PUT</td>
+      <td>/warehouses/{id}</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "name": "부산창고" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "name": "부산창고" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Warehouse</td>
+      <td>창고 삭제</td>
+      <td>DELETE</td>
+      <td>/warehouses/{id}</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "message": "창고 비활성화 처리됨" }</pre></details>
+      </td>
+      <td>Soft Delete</td>
+    </tr>
+    <tr>
+      <td>Warehouse</td>
+      <td>창고 관리자 추가</td>
+      <td>POST</td>
+      <td>/warehouses/{id}/managers</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "memberId": 10 }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "warehouseId": 1, "memberId": 10 }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Warehouse</td>
+      <td>창고 관리자 삭제</td>
+      <td>DELETE</td>
+      <td>/warehouses/{id}/managers/{memberId}</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "message": "관리자 권한 해제" }</pre></details>
+      </td>
+      <td>추가 제안</td>
+    </tr>
+    <tr>
+      <td>Pallet</td>
+      <td>팔렛트 등록</td>
+      <td>POST</td>
+      <td>/pallets</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "warehouseId": 1, "code": "PL001" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "warehouseId": 1, "code": "PL001" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Pallet</td>
+      <td>팔렛트 수정</td>
+      <td>PUT</td>
+      <td>/pallets/{id}</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "code": "PL002" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "code": "PL002" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Pallet</td>
+      <td>팔렛트 삭제</td>
+      <td>DELETE</td>
+      <td>/pallets/{id}</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "message": "팔렛트 비활성화 처리됨" }</pre></details>
+      </td>
+      <td>Soft Delete</td>
+    </tr>
+    <tr>
+      <td>Pallet</td>
+      <td>팔렛트 조회</td>
+      <td>GET</td>
+      <td>/pallets?warehouseId=1</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>[{ "id": 1, "code": "PL001", "status": "ACTIVE" }]</pre></details>
+      </td>
+      <td>검색조건 가능</td>
+    </tr>
+    <tr>
+      <td>ItemCategory</td>
+      <td>상품 카테고리 등록</td>
+      <td>POST</td>
+      <td>/item-categories</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "mainCategory": "식품", "subCategory": "과자" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "mainCategory": "식품", "subCategory": "과자" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>ItemCategory</td>
+      <td>상품 카테고리 수정</td>
+      <td>PUT</td>
+      <td>/item-categories/{id}</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "subCategory": "스낵" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "subCategory": "스낵" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>ItemCategory</td>
+      <td>상품 카테고리 삭제</td>
+      <td>DELETE</td>
+      <td>/item-categories/{id}</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "message": "카테고리 비활성화 처리됨" }</pre></details>
+      </td>
+      <td>Soft Delete</td>
+    </tr>
+    <tr>
+      <td>ItemCategory</td>
+      <td>상품 카테고리 조회</td>
+      <td>GET</td>
+      <td>/item-categories?mainCategory=식품</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>[{ "id": 1, "mainCategory": "식품", "subCategory": "과자" }]</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>상품 등록</td>
+      <td>POST</td>
+      <td>/items</td>
+      <td>
+        <details><summary>보기</summary><pre>{
+  "itemCategoryId": 1,
+  "sku": "SKU001",
+  "name": "초코파이",
+  "unit": "EA"
+}</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "sku": "SKU001", "name": "초코파이" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>상품 수정</td>
+      <td>PUT</td>
+      <td>/items/{id}</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "name": "오리온 초코파이" }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "name": "오리온 초코파이" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>상품 삭제</td>
+      <td>DELETE</td>
+      <td>/items/{id}</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "message": "상품 비활성화 처리됨" }</pre></details>
+      </td>
+      <td>Soft Delete</td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>상품 목록 조회</td>
+      <td>GET</td>
+      <td>/items?categoryId=1&amp;page=0&amp;size=10</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{
+  "content": [{ "id": 1, "sku": "SKU001", "name": "초코파이" }],
+  "page": 0,
+  "totalPages": 1
+}</pre></details>
+      </td>
+      <td>페이징</td>
+    </tr>
+    <tr>
+      <td>Item</td>
+      <td>상품 단건 조회</td>
+      <td>GET</td>
+      <td>/items/{id}</td>
+      <td>-</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "id": 1, "sku": "SKU001", "name": "초코파이", "status": "ACTIVE" }</pre></details>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Inventory</td>
+      <td>입고</td>
+      <td>POST</td>
+      <td>/inbounds</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "itemId": 1, "palletId": 5, "quantity": 100 }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "eventId": "kafka-offset-123", "status": "PUBLISHED" }</pre></details>
+      </td>
+      <td>Kafka 이벤트 발행</td>
+    </tr>
+    <tr>
+      <td>Inventory</td>
+      <td>출고</td>
+      <td>POST</td>
+      <td>/outbounds</td>
+      <td>
+        <details><summary>보기</summary><pre>{ "itemId": 1, "palletId": 5, "quantity": 50 }</pre></details>
+      </td>
+      <td>
+        <details><summary>보기</summary><pre>{ "eventId": "kafka-offset-124", "status": "PUBLISHED" }</pre></details>
+      </td>
+      <td>Kafka 이벤트 발행</td>
+    </tr>
+  </tbody>
+</table>
+
+
 
 # 로그인 프로세스 정리
 
