@@ -168,48 +168,6 @@ erDiagram
       <td>JWT 발행</td>
     </tr>
     <tr>
-      <td>Auth</td>
-      <td>사용자 인증 (랜덤코드 전송)</td>
-      <td>POST</td>
-      <td>/auth/verify-code</td>
-      <td>
-        <details>
-          <summary>보기</summary>
-          <pre>{ "email": "test@test.com" }</pre>
-        </details>
-      </td>
-      <td>
-        <details>
-          <summary>보기</summary>
-          <pre>{ "message": "인증코드 발송 완료" }</pre>
-        </details>
-      </td>
-      <td>비밀번호 변경 전</td>
-    </tr>
-    <tr>
-      <td>Auth</td>
-      <td>비밀번호 변경</td>
-      <td>PUT</td>
-      <td>/auth/password</td>
-      <td>
-        <details>
-          <summary>보기</summary>
-          <pre>{
-  "email": "test@test.com",
-  "code": "123456",
-  "newPassword": "****"
-}</pre>
-        </details>
-      </td>
-      <td>
-        <details>
-          <summary>보기</summary>
-          <pre>{ "message": "비밀번호 변경 완료" }</pre>
-        </details>
-      </td>
-      <td></td>
-    </tr>
-    <tr>
       <td>User</td>
       <td>사용자 목록 조회</td>
       <td>GET</td>
@@ -247,25 +205,6 @@ erDiagram
         </details>
       </td>
       <td></td>
-    </tr>
-    <tr>
-      <td>User</td>
-      <td>사용자 생성</td>
-      <td>POST</td>
-      <td>/users</td>
-      <td>
-        <details>
-          <summary>보기</summary>
-          <pre>{ "email": "new@test.com", "password": "1234" }</pre>
-        </details>
-      </td>
-      <td>
-        <details>
-          <summary>보기</summary>
-          <pre>{ "id": 2, "email": "new@test.com" }</pre>
-        </details>
-      </td>
-      <td>운영 정책에 따라</td>
     </tr>
   </tbody>
 </table>
